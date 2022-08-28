@@ -9,69 +9,41 @@ public class GameManager : MonoBehaviour
     private Transform playerTransform;
     public List<GameObject> enemies;
     public TextMeshProUGUI timer;
-    private float timerTime = 60.0f;
-    private bool isGameActive;
-<<<<<<< HEAD
+    public GameObject winText;
+    public GameObject loseText;
+    public float timerTime = 60.0f;
+    public bool isGameActive;
     public GameObject WinPanel;
-   
+    public GameObject LosePanel;
     public void GameOver()
     {
         WinPanel.SetActive(true);
+        winText.SetActive(true);
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Back();
+        }
+        else if (Input.GetKey(KeyCode.R))
+        {
+            Restart();
+        }
     }
 
     public void Restart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+@ -70,7 +78,15 @@ public class GameManager : MonoBehaviour
     }
-    public void Back()
+public void Death()
+{
+    LosePanel.SetActive(true);
+    loseText.SetActive(true);
+    if (Input.GetKey(KeyCode.Escape))
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        Back();
     }
-=======
-    private float spawnBoundMin = 5f;
-    private float spawnBoundMax = 10f; 
->>>>>>> upstream/main
-    // Start is called before the first frame update
+    else if (Input.GetKey(KeyCode.R))
+    {
+        Restart();
+    }
+}
 
-    void Start()
-    {
-        playerTransform = GameObject.Find("Player").GetComponent<Transform>();
-        isGameActive = true;
-        StartCoroutine(Spawn());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        timerTime -= Time.deltaTime;
-        Mathf.Round(timerTime);
-        timer.text = "TIMER:\n " + timerTime;
-        if (timerTime < 0)
-        {
-            isGameActive = false;
-            Debug.Log("You Survived!");
-            GameOver();
-        }
-    }
-    IEnumerator Spawn()
-    {
-        while (isGameActive)
-        {
-            float randomX = Random.Range(playerTransform.position.x + spawnBoundMin, playerTransform.position.x + spawnBoundMax);
-            float randomZ = Random.Range(playerTransform.position.z + spawnBoundMin, playerTransform.position.z + spawnBoundMax);
-            Vector3 randomPos = new Vector3(randomX, 0.5f, randomZ);
-            int randomIndex = Random.Range(0, 3);
-            if (isGameActive)
-            {
-                Instantiate(enemies[randomIndex], randomPos, enemies[randomIndex].transform.rotation);
-            }
-            spawnBoundMin -= 0.04f;
-            spawnBoundMax -= 0.04f;
-            yield return new WaitForSeconds(2);
-        }
-    }
-    
-        
 }  
-
-
